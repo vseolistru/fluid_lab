@@ -12,7 +12,7 @@ interface FiltersSidebarProps {
   onChange: (filters: any) => void
 }
 
-const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ filters: _filters, onChange }) => {
+const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ filters: _filters, onChange:_onChange }) => {
   return (
     <div className="space-y-6 sticky top-24">
       {/* Переключатели */}
