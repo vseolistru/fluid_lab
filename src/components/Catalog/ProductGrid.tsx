@@ -114,7 +114,7 @@ const mockProducts: CatalogProduct[] = [
   },
 ]
 
-const ProductGrid: React.FC<ProductGridProps> = ({ category, filters }) => {
+const ProductGrid: React.FC<ProductGridProps> = ({ category: _category, filters: _filters }) => {
   // Пока просто показываем все моковые данные
   const products = mockProducts
 

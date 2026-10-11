@@ -6,7 +6,7 @@ const ScrollVideoSection: React.FC = () => {
   const lastVideoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isNextVideoReady, setIsNextVideoReady] = useState(false)
-  const [isLastVideoReady, setIsLastVideoReady] = useState(false)
+  const [setIsLastVideoReady] = useState(false)
   const [progress, setProgress] = useState(0)
   const [showLastVideo, setShowLastVideo] = useState(false)
 

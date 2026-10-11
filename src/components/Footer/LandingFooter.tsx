@@ -1,6 +1,5 @@
 // src/components/Footer/Footer.tsx
 import React from 'react'
-import { Droplet } from 'lucide-react'
 
 const LandingFooter: React.FC = () => {
   return (

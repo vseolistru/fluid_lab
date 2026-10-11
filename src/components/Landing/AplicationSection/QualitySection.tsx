@@ -1,6 +1,6 @@
 // src/components/QualitySection/QualitySection.tsx
 import React from 'react'
-import { ArrowUpRight, FlaskConical, AlertTriangle, Factory, Droplet, User, FileCheck } from 'lucide-react'
+import { ArrowUpRight, FlaskConical, AlertTriangle, Factory, Droplet, User } from 'lucide-react'
 
 interface QualityStep {
   icon: React.ReactNode
