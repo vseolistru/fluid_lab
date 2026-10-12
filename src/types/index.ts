@@ -1,6 +1,19 @@
 // src/types/index.ts
 
-// ==================== ПРОДУКТЫ ====================
+// src/types/index.ts
+
+// ==================== БАЗОВЫЕ ТИПЫ ====================
+
+export type ProductForm = 'concentrate' | 'mct50'
+export type Application = 'cosmetics' | 'pharma' | 'food' | 'perfume' | 'alcohol' | 'supplements'
+
+// Строгий Union-тип для объёмов (в мл)
+export type Volume = 50 | 100 | 500 | 1000 | 3000 | 5000
+
+export interface Characteristic {
+  label: string
+  value: string
+}
 
 export interface ProductCharacteristics {
   plant: string
@@ -15,15 +28,66 @@ export interface ProductDetails {
   form: string
 }
 
+// ==================== ВАРИАНТ ТОВАРА (Объём + Цена) ====================
+
+export interface ProductVariant {
+  volume: Volume
+  price: number
+  oldPrice?: number
+  discount?: number
+  inStock: boolean // Наличие может отличаться для разных объёмов!
+}
+
+// ==================== ПОЛНЫЙ ТИП ТОВАРА ====================
+
 export interface Product {
   id: number
   name: string
+  slug: string
+  image: string[]
+  category: string
+  application: Application
+  form: ProductForm
+
+  // Описания
   shortDescription: string
-  image: string
+  description: string
   fullTitle: string
-  characteristics: ProductCharacteristics
+
+  // Логистика
+  duration: string       // e.g., "12 месяцев"
+  startDate: string      // e.g., "5 апреля"
+  expirationDate?: string
+
+  // ВАРИАНТЫ (вместо плоских price и availableVolumes)
+  variants: ProductVariant[]
+
+  // Дополнительно
+  characteristics: Characteristic[]
+  productCharacteristics: ProductCharacteristics
   details: ProductDetails
+  use?: string[]
+
+  // SEO
+  seoTitle: string
+  seoDescription: string
 }
+
+// ==================== ДЛЯ КАТАЛОГА (суженный) ====================
+
+export type CatalogProduct = Pick<
+  Product,
+  | 'id'
+  | 'name'
+  | 'slug'
+  | 'image'
+  | 'category'
+  | 'application'
+  | 'form'
+  | 'duration'
+  | 'startDate'
+  | 'variants' // Берём весь массив, в карточке покажем variants[0]
+>
 
 // ==================== ПОЛЬЗОВАТЕЛЬ ====================
 
@@ -53,24 +117,3 @@ export interface Product {
 //   status: 'pending' | 'processing' | 'shipped' | 'delivered'
 //   createdAt: Date
 // }
-
-export type ProductForm = 'concentrate' | 'mct50'
-export type Application = 'cosmetics' | 'pharma' | 'food' | 'perfume' | 'alcohol' | 'supplements'
-
-export interface CatalogProduct {
-  id: number
-  name: string
-  slug: string
-  image: string
-  category: string          // Облепиха, Амарант, Чёрный тмин...
-  application: Application  // Косметика, Фармацевтика...
-  form: ProductForm
-  volume: string            // 50мл, 100мл, 1л
-  price: number             // Цена в рублях
-  oldPrice?: number         // Старая цена (для скидки)
-  discount?: number         // Процент скидки
-  inStock: boolean
-  duration: string          // Срок производства
-  startDate: string         // Дата следующей партии
-  description: string
-}

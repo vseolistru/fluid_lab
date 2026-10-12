@@ -1,8 +1,8 @@
 // src/pages/Catalog.tsx
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import Header from '../components/ Header/Header'
-import CatalogHeader from '../components/ Header/CatalogHero'
+import Header from '../components/Header/Header'
+import CatalogHeader from '../components/Header/CatalogHero'
 import CategoryTabs from '../components/Catalog/CategoryTabs'
 import FiltersSidebar from '../components/Catalog/FiltersSidebar'
 import ProductGrid from '../components/Catalog/ProductGrid'

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Landing/Hero/Hero';
 import ScrollVideoSection from '../components/Landing/Hero/ScrollVideoSection';
 import ProcessSection from '../components/Landing/Hero/ProcessSection';
-import Header from '../components/ Header/Header';
+import Header from '../components/Header/Header';
 import TechnologySection from '../components/Landing/TechnologySection/TechnologySection';
 import CompositionSection from '../components/Landing/TechnologySection/CompositionSection';
 import ProductSection from '../components/Landing/TechnologySection/ProductSection';

@@ -1,91 +1,128 @@
 // src/components/catalog/ProductCard.tsx
 import React from 'react'
-import { Heart, ShoppingCart, Flame } from 'lucide-react'
-import type { CatalogProduct } from '../../types'
+import { Link } from 'react-router-dom'
+import { Heart, ShoppingCart, Flame, FlaskConical } from 'lucide-react'
+import type { Product } from '../../types'
 
 interface ProductCardProps {
-  product: CatalogProduct
+  product: Product
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const hasDiscount = product.discount && product.discount > 0
+  const firstVariant = product.variants[0]
+  const hasDiscount = firstVariant.discount !== undefined && firstVariant.discount > 0
+
+  // Защита для картинки (массив или строка)
+  const mainImage = Array.isArray(product.image) ? product.image[0] : product.image
+  
+  // Извлекаем новые данные
+  const composition = product.details?.composition || ''
+  const uses = product.use || []
 
   return (
-    <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all duration-300 group">
-      {/* Бейдж категории */}
+    <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
+      {/* Категория */}
       <div className="px-5 pt-5 pb-2">
         <span className="inline-block text-xs font-semibold text-indigo-600 tracking-wider">
           {product.category}
         </span>
       </div>
 
-      {/* Картинка */}
+      {/* Изображение */}
       <div className="relative h-64 bg-gray-50 flex items-center justify-center p-6">
         <img
-          src={product.image}
+          src={mainImage}
           alt={product.name}
           className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
         />
-        {/* Кнопка вишлист */}
         <button className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors">
           <Heart className="w-4 h-4 text-gray-600" strokeWidth={1.5} />
         </button>
-        {/* Бейдж скидки */}
         {hasDiscount && (
           <div className="absolute top-4 left-4 px-2.5 py-1 bg-red-500 text-white text-xs font-bold rounded-full">
-            -{product.discount}%
+            -{firstVariant.discount}%
           </div>
         )}
       </div>
 
       {/* Контент */}
-      <div className="p-5">
-        {/* Название */}
+      <div className="p-5 flex flex-col flex-1">
         <h3 className="text-lg font-bold text-gray-900 mb-1 leading-tight">
           {product.name}
         </h3>
 
-        {/* Мета */}
+        {/* Логистика */}
         <div className="text-xs text-gray-500 mb-3 space-y-0.5">
-          <p>{product.duration}</p>
-          <p>Старт: {product.startDate}</p>
+          <p>Срок: {product.duration}</p>
+          <p>Старт партии: {product.startDate}</p>
         </div>
 
-        {/* Теги */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {hasDiscount && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-600 text-xs font-semibold rounded-full">
-              <Flame className="w-3 h-3" />
-              -{product.discount}%
-            </span>
-          )}
+        {/* === НОВОЕ: Состав === */}
+        {composition && (
+          <div className="mb-3">
+            <p className="text-xs text-gray-600 line-clamp-2 flex items-start gap-1.5 leading-relaxed">
+              <FlaskConical className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-indigo-500" />
+              <span>{composition}</span>
+            </p>
+          </div>
+        )}
+
+        {/* Бейдж формы выпуска */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
           <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-full">
             {product.form === 'concentrate' ? 'Концентрат' : 'MCT 50%'}
           </span>
         </div>
 
+        {/* === НОВОЕ: Назначение (теги) === */}
+        {uses.length > 0 && (
+          <div className="mb-4">
+            <p className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1.5">
+              Назначение:
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {uses.slice(0, 2).map((item, idx) => (
+                <span 
+                  key={idx} 
+                  className="text-[10px] px-2 py-1 bg-gray-100 text-gray-600 rounded-md font-medium"
+                >
+                  {item}
+                </span>
+              ))}
+              {uses.length > 2 && (
+                <span className="text-[10px] px-2 py-1 text-gray-400 font-medium">
+                  +{uses.length - 2}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Цена */}
-        <div className="mb-4">
-          {product.oldPrice && (
+        <div className="mb-4 mt-auto">
+          {firstVariant.oldPrice && (
             <p className="text-xs text-gray-400 line-through">
-              {product.oldPrice.toLocaleString()} ₽
+              {firstVariant.oldPrice.toLocaleString()} ₽
             </p>
           )}
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold text-gray-900">
-              {product.price.toLocaleString()} ₽
+              {firstVariant.price.toLocaleString()} ₽
             </span>
             <span className="text-xs text-gray-500">
-              за {product.volume}
+              за {firstVariant.volume} мл
             </span>
           </div>
         </div>
 
         {/* Кнопки */}
         <div className="flex gap-2">
-          <button className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-semibold text-gray-900 hover:bg-gray-50 transition-colors">
+          <Link
+            to={`/product/${product.slug}`}
+            className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-semibold text-gray-900 hover:bg-gray-50 transition-colors text-center"
+          >
             Подробнее
-          </button>
+          </Link>
           <button className="flex-1 px-4 py-2.5 bg-indigo-900 text-white rounded-xl text-sm font-semibold hover:bg-indigo-800 transition-colors inline-flex items-center justify-center gap-2">
             <ShoppingCart className="w-4 h-4" />
             В корзину
