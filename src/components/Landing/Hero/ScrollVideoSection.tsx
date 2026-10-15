@@ -28,7 +28,7 @@ const ScrollVideoSection: React.FC = () => {
   ]
 
   const currentTextIndex = Math.min(Math.floor(progress * 3), 2)
-  const containerScale = 1.27 + progress * 0.75
+  const containerScale = 1.57 + progress * 1.15
   const textOpacity = Math.max(0, 1 - progress / TEXT_DISAPPEAR_PROGRESS)
   const shouldShowStaticImage = progress < TEXT_DISAPPEAR_PROGRESS
 
